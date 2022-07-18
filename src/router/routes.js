@@ -13,15 +13,28 @@ export default [
         component:Home
     },
     {
-        path:'/search',
-        component:Search
+        name:'search',
+        path:'/search/:keyword?',
+        component:Search,
+        // 路由传props参数
+        // props:true   //只能接收params参数
+        props:(route)=>({
+            keyword3: route.params.keyword,
+            keyword4: route.query.keyword2
+        })
     },
     {
         path:'/login',
-        component:Login
+        component:Login,
+        meta:{
+            isHideFooter: true
+        }
     },
     {
         path:'/register',
-        component:Register
+        component:Register,
+        meta:{
+            isHideFooter: true
+        }
     },
 ]
