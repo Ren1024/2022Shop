@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import TypeNav from './TypeNav'
 import List from './List'
 import Today from './Today'
 import Rank from './Rank'
@@ -23,7 +22,6 @@ import Brand from './Brand'
 export default {
   name: 'Home',
   components:{
-    TypeNav,
     List,
     Today,
     Rank,
