@@ -14,20 +14,47 @@
                 <a href="###">秒杀</a>
             </nav>
             <div class="sort">
-                <div class="all-sort-list2">
+                <div class="all-sort-list2" @click="toSearch">
                     <div class="item" v-for="c1 in categoryList" :key="c1.categoryId">
                         <h3>
-                            <a href="">{{c1.categoryName}}</a>
+                            <a href="##" 
+                                :data-categoryName="c1.categoryName" 
+                                :data-categoryId1="c1.categoryId"
+                            >{{c1.categoryName}}</a>
+                            <!-- <router-link 
+                                :to="`/search?categoryName=${c1.categoryName}&&categoryId1=${c1.categoryId}`"
+                            >{{c1.categoryName}}</router-link> -->
+                            <!-- <a href="##" 
+                                @click="$router.push(`/search?categoryName=${c1.categoryName}&&categoryId1=${c1.categoryId}`)"
+                            >{{c1.categoryName}}</a> -->
                         </h3>
                         <div class="item-list clearfix">
                             <div class="subitem" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
                                 <dl class="fore" >
                                     <dt>
-                                        <a href="">{{c2.categoryName}}</a>
+                                        <a href="##" 
+                                            :data-categoryName="c2.categoryName"
+                                            :data-categoryId2="c2.categoryId"
+                                        >{{c2.categoryName}}</a>
+                                        <!-- <router-link 
+                                            :to="`/search?categoryName=${c2.categoryName}&&categoryId2=${c2.categoryId}`"
+                                        >{{c2.categoryName}}</router-link> -->
+                                        <!-- <a href="##" 
+                                            @click="$router.push(`/search?categoryName=${c2.categoryName}&&categoryId2=${c2.categoryId}`)"
+                                        >{{c2.categoryName}}</a> -->
                                     </dt>
                                     <dd >
                                         <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                                            <a href="recharge.html">{{c3.categoryName}}</a>
+                                            <a href="##"
+                                                :data-categoryName="c3.categoryName"
+                                                :data-categoryId3="c3.categoryId"
+                                            >{{c3.categoryName}}</a>
+                                            <!-- <router-link 
+                                                :to="`/search?categoryName=${c3.categoryName}&&categoryId3=${c3.categoryId}`"
+                                            >{{c3.categoryName}}</router-link> -->
+                                            <!-- <a href="##" 
+                                                @click="$router.push(`/search?categoryName=${c3.categoryName}&&categoryId3=${c3.categoryId}`)"
+                                            >{{c3.categoryName}}</a> -->
                                         </em>
                                     </dd>
                                 </dl>
@@ -41,15 +68,47 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
     name: 'TypeNav',
     /* mounted(){
         console.log(this.$store.state.home.categoryList);
     }, */
     computed:{
-        categoryList(){
+        /* categoryList(){
             return this.$store.state.home.categoryList
             // console.log(result);
+        } */
+        // ...mapState('categoryList')
+        ...mapState({
+            categoryList: state => state.home.categoryList
+        })
+    },
+    methods:{
+        toSearch(event){
+            const target = event.target
+            // console.dir(target);
+            const {categoryname,categoryid1,categoryid2,categoryid3} = target.dataset
+            if(categoryname){
+                const query = {
+                    categoryName:categoryname
+                }
+                if(categoryid1){
+                    query.categoryId1 = categoryid1
+                }else if(categoryid2){
+                    query.categoryId2 = categoryid2
+                }else if(categoryid3){
+                    query.categoryId3 = categoryid3
+                }
+                // 第一种写法
+                // this.$router.push({path:'/search', query})
+                // 第二种写法
+                this.$router.push({
+                    name:'search',
+                    query
+                })
+            }
         }
     }
 }
