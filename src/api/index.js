@@ -13,3 +13,6 @@ export function reqCategoryList(){
         method:'get',
     })
 }
+
+// banner请求
+export const reqBannerList = () => ajax('/cms/banner')
