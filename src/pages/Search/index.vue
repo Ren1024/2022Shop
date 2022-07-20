@@ -1,5 +1,6 @@
 <template>
   <div>
+    <TypeNav></TypeNav>
     <h3>search组件</h3>
     <p>route.params: {{$route.params.keyword}}</p>
     <p>route.query: {{$route.query.keyword2}}</p>
@@ -9,9 +10,11 @@
 </template>
 
 <script>
+import TypeNav from '@/components/TypeNav/index.vue';
 export default {
-  name: 'Search',
-  props:['keyword3','keyword4']
+    name: "Search",
+    props: ["keyword3", "keyword4"],
+    components: { TypeNav }
 }
 </script>
 

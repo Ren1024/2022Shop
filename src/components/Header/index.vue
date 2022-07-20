@@ -59,13 +59,12 @@ export default {
 
       const location = {
         name:'search',
+        // 携带当前已有的query参数
+        query: this.$route.query
       }
       if(this.keyword){
         location.params = {
           keyword: this.keyword
-        },
-        location.query = {
-          keyword2:this.keyword.toUpperCase()
         }
       }
 
