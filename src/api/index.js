@@ -3,6 +3,7 @@
 */
 
 import ajax from './ajax'
+import mockAjax from './mockAjax'
 
 // 首页三级分类 /api/product/getBaseCategoryList
 export function reqCategoryList(){
@@ -16,3 +17,14 @@ export function reqCategoryList(){
 
 // banner请求
 export const reqBannerList = () => ajax('/cms/banner')
+
+// 搜索商品请求
+export const reqSearchList = (listParams) => ajax.post('/list',listParams)
+
+
+// mock模拟数据请求
+// today-mock请求
+export const reqTodayList = () => mockAjax('/today')
+
+// floors请求
+export const reqFloors = () => mockAjax('/floors')

@@ -1,12 +1,19 @@
 /* 
 vuex管理的home模块
 */
-import { reqCategoryList, reqBannerList } from '@/api'
+import { 
+    reqCategoryList,
+    reqBannerList,
+    reqFloors,
+    reqTodayList,
+} from '@/api'
 
 
 const state = {
     categoryList:[],
     bannerList:[],
+    floors:[],
+    todaylist:[]
 }
 const mutations = {
     CATEGORY_LIST(state,list){
@@ -15,6 +22,12 @@ const mutations = {
     },
     BANNER_LIST(state,bannerList){
         state.bannerList = bannerList.splice(4, 6)
+    },
+    TODAY_LIST(state,todayList){
+        state.todayList = todayList
+    },
+    FLOORS(state,floors){
+        state.floors = floors
     }
 }
 const actions = {
@@ -29,6 +42,18 @@ const actions = {
         const result = await reqBannerList()
         if(result.code === 200){
             commit('BANNER_LIST',result.data)
+        }
+    },
+    async getTodayList({commit}){
+        const result = await reqTodayList()
+        if(result.code === 200){
+            commit('TODAY_LIST',result.data)
+        }
+    },
+    async getFloors({commit}){
+        const result = await reqFloors()
+        if(result.code === 200){
+            commit('FLOORS',result.data)
         }
     }
 }
