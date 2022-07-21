@@ -17,10 +17,7 @@ export default {
     this.$store.dispatch('getCategoryList')
     this.$store.dispatch('getBannerList')
     this.$store.dispatch('getFloors')
-    this.$store.dispatch('getSearchList',{
-      pageNo:1,
-      pageSize:10,
-    })
+    
 
   },
   components:{

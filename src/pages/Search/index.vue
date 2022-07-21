@@ -11,10 +11,14 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-if="options.categoryName">
+              {{options.categoryName}}
+              <i @click="removeCategory">×</i>
+            </li>
+            <li class="with-x" v-if="options.keyword">
+              {{options.keyword}}
+              <i @click="removeKeyword">×</i>
+            </li>
           </ul>
         </div>
 
@@ -118,11 +122,84 @@
 
   export default {
     name: 'Search',
+    data(){
+      return {
+        options:{
+          category1Id:'',  //一级分类ID
+          category2Id:'',  //二级分类ID
+          category3Id:'',  //三级分类ID
+          categoryName:'',  //分类名称
+          keyword:'',  //搜索关键字
+          props:[],  //商品属性的数组: ["属性ID:属性值:属性名"]示例: ["2:6.0～6.24英寸:屏幕尺寸"]
+          trademark:'',  //品牌: "ID:品牌名称"示例: "1:苹果"
+          order:'',  //排序方式 1: 综合,2: 价格 asc: 升序,desc: 降序 示例: "1:desc"
+          pageNo: 1,  //页码
+          pageSize: 10,  //每页数量
+        }
+      }
+    },
+    created(){
+      this.updateParams()
+      this.getShopList()
+    },
     computed:{
       /* ...mapState({
         goodsList: state => state.search.searchlist.goodsList || []
       }) */
       ...mapGetters(['goodsList'])
+    },
+    watch:{
+      $route(to, from){
+        this.updateParams()
+        this.getShopList()
+      }
+    },
+
+    methods:{
+      // 重置筛选条件
+      removeCategory(){
+        this.options.category1Id = ''
+        this.options.category2Id = ''
+        this.options.category3Id = ''
+        this.options.categoryName = ''
+        // 筛选条件更新，发送请求重新获取数据
+        // this.getShopList()
+
+        // 重新跳转路由,去除删除的参数
+        this.$router.push({
+          name: 'search',
+          params: this.$route.params
+        })
+      },
+      // 重置关键字
+      removeKeyword(){
+        this.options.keyword = ''
+        // 关键字条件变化,重新发送请求
+        // this.getShopList()
+        this.$router.push({
+          name: 'search',
+          query: this.$route.query
+        })
+      },
+
+      // 获取搜索参数
+      updateParams(){
+        const { keyword } = this.$route.params
+        const {category1Id,category2Id,category3Id,categoryName} = this.$route.query
+        this.options = {
+          ...this.options,
+          keyword,
+          category1Id,
+          category2Id,
+          category3Id,
+          categoryName
+        }
+      },
+      // 发送请求
+      getShopList(){
+        console.log('@@getSearchList');
+        this.$store.dispatch('getSearchList', this.options)
+      }
     },
     components: {
       SearchSelector

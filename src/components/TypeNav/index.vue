@@ -16,7 +16,7 @@
                                 <h3>
                                     <a href="##" 
                                         :data-categoryName="c1.categoryName" 
-                                        :data-categoryId1="c1.categoryId"
+                                        :data-category1Id="c1.categoryId"
                                     >{{c1.categoryName}}</a>
                                     <!-- <router-link 
                                         :to="`/search?categoryName=${c1.categoryName}&&categoryId1=${c1.categoryId}`"
@@ -31,7 +31,7 @@
                                             <dt>
                                                 <a href="##" 
                                                     :data-categoryName="c2.categoryName"
-                                                    :data-categoryId2="c2.categoryId"
+                                                    :data-category2Id="c2.categoryId"
                                                 >{{c2.categoryName}}</a>
                                                 <!-- <router-link 
                                                     :to="`/search?categoryName=${c2.categoryName}&&categoryId2=${c2.categoryId}`"
@@ -44,7 +44,7 @@
                                                 <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
                                                     <a href="##"
                                                         :data-categoryName="c3.categoryName"
-                                                        :data-categoryId3="c3.categoryId"
+                                                        :data-category3Id="c3.categoryId"
                                                     >{{c3.categoryName}}</a>
                                                     <!-- <router-link 
                                                         :to="`/search?categoryName=${c3.categoryName}&&categoryId3=${c3.categoryId}`"
@@ -159,17 +159,17 @@ export default {
         toSearch(event){
             const target = event.target
             // console.dir(target);
-            const {categoryname,categoryid1,categoryid2,categoryid3} = target.dataset
+            const {categoryname,category1id,category2id,category3id} = target.dataset
             if(categoryname){
                 const query = {
                     categoryName:categoryname
                 }
-                if(categoryid1){
-                    query.categoryId1 = categoryid1
-                }else if(categoryid2){
-                    query.categoryId2 = categoryid2
-                }else if(categoryid3){
-                    query.categoryId3 = categoryid3
+                if(category1id){
+                    query.category1Id = category1id
+                }else if(category2id){
+                    query.category2Id = category2id
+                }else if(category3id){
+                    query.category3Id = category3id
                 }
                 // 第一种写法
                 // this.$router.push({path:'/search', query})
@@ -182,6 +182,9 @@ export default {
                 }
 
                 this.$router.push(location)
+
+                // 点击跳转,隐藏导航栏
+                this.hideFirst()
             }
         }
     }

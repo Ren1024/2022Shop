@@ -27,6 +27,14 @@ const getters = {
     // 商品列表
     goodsList(state){
         return state.searchlist.goodsList || []
+    },
+    // 筛选列表
+    attrsList(state){
+        return state.searchlist.attrsList || []
+    },
+    // 品牌列表
+    trademarkList(state){
+        return state.searchlist.trademarkList || []
     }
 }
 
