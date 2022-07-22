@@ -16,6 +16,15 @@ const mutations = {
 }
 const actions = {
     async getSearchList({commit},searchParams){
+        // 删除发送请求携带的空对象和空数组
+        searchParams = {...searchParams}
+        Object.keys(searchParams).forEach(key => {
+            if(searchParams[key] === '' || Array.isArray(searchParams[key]) && searchParams[key].length === 0){
+                delete searchParams[key]
+            }
+        })
+
+
         const result = await reqSearchList(searchParams)
         // console.log(result);
         if(result.code === 200){

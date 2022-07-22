@@ -37,14 +37,6 @@ export default {
 
     })
   },
-  methods:{
-    test(){
-      console.log(this.floors);
-    }
-  },
-  mounted(){
-    this.test()
-  }
 }
 </script>
 

@@ -11,4 +11,4 @@ Mock.mock( '/mock/today', {code: 200, data:today} )
 // 楼层数据
 Mock.mock( '/mock/floors', {code: 200, data:floors} )
 
-console.log('mockserve');
+// console.log('mockserve');

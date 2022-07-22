@@ -68,7 +68,15 @@ export default {
         }
       }
 
-      this.$router.push(location)
+      /* 
+      其他也跳转search用push
+      search跳转search用replace
+      */
+      if(this.$route.name === 'search'){
+          this.$router.replace(location)
+      }else {
+          this.$router.push(location)
+      }
       // this.$router.push(location,()=>{})
       // this.$router.push(location).catch(()=>{})
     }

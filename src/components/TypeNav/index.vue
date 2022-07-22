@@ -149,7 +149,7 @@ export default {
 
         // 使用lodash函数节流（按需引入）
         showSubList: throttle(function(index){
-            console.log('thorttle',index);
+            // console.log('thorttle',index);
             if(this.currentIndex !== -2){
                 this.currentIndex = index
             }
@@ -181,11 +181,19 @@ export default {
                     params: this.$route.params
                 }
 
-                this.$router.push(location)
+                /* 
+                其他也跳转search用push
+                search跳转search用replace
+                */
+                if(this.$route.name === 'search'){
+                    this.$router.replace(location)
+                }else {
+                    this.$router.push(location)
+                }
 
                 // 点击跳转,隐藏导航栏
                 this.hideFirst()
-            }
+                }
         }
     }
 }
