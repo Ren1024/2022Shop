@@ -44,6 +44,10 @@ const getters = {
     // 品牌列表
     trademarkList(state){
         return state.searchlist.trademarkList || []
+    },
+    // 所有数据的总数量
+    total(state){
+        return state.searchlist.total || 0
     }
 }
 

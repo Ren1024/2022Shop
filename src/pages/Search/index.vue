@@ -96,35 +96,11 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <Pagination
+            :currentPage="options.pageNo"
+            :total="total"
+            :pageSize="options.pageSize"
+          ></Pagination>
         </div>
       </div>
     </div>
@@ -147,10 +123,10 @@
           categoryName:'',  //分类名称
           keyword:'',  //搜索关键字
           props:[],  //商品属性的数组: ["属性ID:属性值:属性名"]示例: ["2:6.0～6.24英寸:屏幕尺寸"]
-          trademark:'',  //品牌: "ID:品牌名称"示例: "1:苹果"
+          // trademark:'',  //品牌: "ID:品牌名称"示例: "1:苹果"
           order:'1:desc',  //排序方式 1: 综合,2: 价格 asc: 升序,desc: 降序 示例: "1:desc"
           pageNo: 1,  //页码
-          pageSize: 10,  //每页数量
+          pageSize: 2,  //每页数量
         }
       }
     },
@@ -162,7 +138,7 @@
       /* ...mapState({
         goodsList: state => state.search.searchlist.goodsList || []
       }) */
-      ...mapGetters(['goodsList']),
+      ...mapGetters(['goodsList','total']),
 
       // 得到排序中排序标识orderFlag,排序类型orderType数组
       orderArr(){
@@ -217,7 +193,9 @@
         // 已有品牌，重复点击无效
         if(trademark === this.options.trademark) return
         // 修改options中的trademark值
-        this.options.trademark = trademark
+        // this.options.trademark = trademark
+        // $set修改响应式数据
+        this.$set(this.options,'trademark',trademark)
         // 筛选条件变化，重新发送请求，获取商品
         this.getShopList()
       },
@@ -231,7 +209,10 @@
 
       // 重置品牌筛选
       removeTrademark(){
-        this.options.trademark = ''
+        // 设置品牌为空
+        // this.options.trademark = ''
+        // 响应式数据删除
+        this.$delete(this.options,'trademark')
         this.getShopList()
       },
 
