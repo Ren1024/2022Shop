@@ -23,7 +23,7 @@
               {{options.trademark}}
               <i @click="removeTrademark">×</i>
             </li>
-            <li class="with-x" v-for="(item, index) in options.props" :key="item" v-if="item">
+            <li class="with-x" v-for="(item, index) in options.props" :key="item" >
               {{item}}
               <i @click="removeProp(index)">×</i>
             </li>
@@ -96,35 +96,13 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <Pagination 
+            :currentPage="options.pageNo"
+            :total="total"
+            :pageSize="options.pageSize"
+            :showPageNo="5"
+            @currentChange="getShopList"
+          ></Pagination>
         </div>
       </div>
     </div>
@@ -133,6 +111,7 @@
 
 <script>
   import SearchSelector from './SearchSelector/SearchSelector'
+  import Pagination from './Pagination'
   // import {mapState} from 'vuex'
   import {mapGetters} from 'vuex'
 
@@ -150,7 +129,7 @@
           trademark:'',  //品牌: "ID:品牌名称"示例: "1:苹果"
           order:'1:desc',  //排序方式 1: 综合,2: 价格 asc: 升序,desc: 降序 示例: "1:desc"
           pageNo: 1,  //页码
-          pageSize: 10,  //每页数量
+          pageSize: 3,  //每页数量
         }
       }
     },
@@ -162,7 +141,7 @@
       /* ...mapState({
         goodsList: state => state.search.searchlist.goodsList || []
       }) */
-      ...mapGetters(['goodsList']),
+      ...mapGetters(['goodsList','total']),
 
       // 得到排序中排序标识orderFlag,排序类型orderType数组
       orderArr(){
@@ -184,6 +163,12 @@
     },
 
     methods:{
+      
+      /* currentChange(page){
+        this.options.pageNo = page
+        this.getShopList(page)
+      }, */
+
       // 设置排序
       setOrder(oldflag){
         // 获取当前的标识和类型
@@ -276,13 +261,15 @@
         }
       },
       // 发送请求
-      getShopList(){
+      getShopList(page=1){
+        this.options.pageNo = page
         // console.log('@@getSearchList');
         this.$store.dispatch('getSearchList', this.options)
       }
     },
     components: {
-      SearchSelector
+      SearchSelector,
+      Pagination
     }
   }
 </script>
