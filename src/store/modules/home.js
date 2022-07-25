@@ -21,7 +21,7 @@ const mutations = {
         // console.log(list);
     },
     BANNER_LIST(state,bannerList){
-        state.bannerList = bannerList.splice(4, 6)
+        state.bannerList = bannerList
     },
     TODAY_LIST(state,todayList){
         state.todayList = todayList
@@ -33,15 +33,16 @@ const mutations = {
 const actions = {
     async getCategoryList({commit}){
         const result = await reqCategoryList()
-        // console.log(result);
         if(result.code === 200){
             commit('CATEGORY_LIST',result.data)
         }
     },
     async getBannerList({commit}){
         const result = await reqBannerList()
+        // console.log(result);
         if(result.code === 200){
             commit('BANNER_LIST',result.data)
+            // console.log();
         }
     },
     async getTodayList({commit}){

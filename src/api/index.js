@@ -15,8 +15,11 @@ export function reqCategoryList(){
     })
 }
 
-// banner请求
-export const reqBannerList = () => ajax('/cms/banner')
+/* // banner请求(真实接口)
+export const reqBannerList = () => ajax('/cms/banner') */
+
+// banner请求（mock接口）
+export const reqBannerList = () => mockAjax('/banner')
 
 // 搜索商品请求
 export const reqSearchList = (listParams) => ajax.post('/list',listParams)

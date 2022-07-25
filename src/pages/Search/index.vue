@@ -23,7 +23,7 @@
               {{options.trademark}}
               <i @click="removeTrademark">×</i>
             </li>
-            <li class="with-x" v-for="(item, index) in options.props" :key="item" v-if="item">
+            <li class="with-x" v-for="(item, index) in options.props" :key="item" >
               {{item}}
               <i @click="removeProp(index)">×</i>
             </li>
@@ -96,10 +96,19 @@
               </li>
             </ul>
           </div>
+<<<<<<< HEAD
           <Pagination
             :currentPage="options.pageNo"
             :total="total"
             :pageSize="options.pageSize"
+=======
+          <Pagination 
+            :currentPage="options.pageNo"
+            :total="total"
+            :pageSize="options.pageSize"
+            :showPageNo="5"
+            @currentChange="getShopList"
+>>>>>>> 252cb0de819491fe5c565c5dd43570dbb88a401e
           ></Pagination>
         </div>
       </div>
@@ -109,6 +118,7 @@
 
 <script>
   import SearchSelector from './SearchSelector/SearchSelector'
+  import Pagination from './Pagination'
   // import {mapState} from 'vuex'
   import {mapGetters} from 'vuex'
 
@@ -126,7 +136,11 @@
           // trademark:'',  //品牌: "ID:品牌名称"示例: "1:苹果"
           order:'1:desc',  //排序方式 1: 综合,2: 价格 asc: 升序,desc: 降序 示例: "1:desc"
           pageNo: 1,  //页码
+<<<<<<< HEAD
           pageSize: 2,  //每页数量
+=======
+          pageSize: 3,  //每页数量
+>>>>>>> 252cb0de819491fe5c565c5dd43570dbb88a401e
         }
       }
     },
@@ -160,6 +174,12 @@
     },
 
     methods:{
+      
+      /* currentChange(page){
+        this.options.pageNo = page
+        this.getShopList(page)
+      }, */
+
       // 设置排序
       setOrder(oldflag){
         // 获取当前的标识和类型
@@ -257,13 +277,15 @@
         }
       },
       // 发送请求
-      getShopList(){
+      getShopList(page=1){
+        this.options.pageNo = page
         // console.log('@@getSearchList');
         this.$store.dispatch('getSearchList', this.options)
       }
     },
     components: {
-      SearchSelector
+      SearchSelector,
+      Pagination
     }
   }
 </script>
