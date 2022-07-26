@@ -45,10 +45,6 @@ const getters = {
     trademarkList(state){
         return state.searchlist.trademarkList || []
     },
-<<<<<<< HEAD
-    // 所有数据的总数量
-=======
->>>>>>> 252cb0de819491fe5c565c5dd43570dbb88a401e
     total(state){
         return state.searchlist.total || 0
     }

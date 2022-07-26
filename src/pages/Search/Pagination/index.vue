@@ -1,125 +1,116 @@
 <template>
-  <div class="pagination">
-    <button 
-        :disabled="myCurrentPage === 1"
-        :class="{disabled: myCurrentPage === 1}" 
-        @click="setCurrentPage(myCurrentPage - 1)"
-    >上一页</button>
-    <button v-if="startEnd.start > 1" @click="setCurrentPage(1)">1</button>
-    <button class="disable" v-if="startEnd.start > 2">...</button>
-    <!-- <button 
-        v-for="item in startEnd.end" 
-        v-if="item >= startEnd.start"
-        :class="{active:item == myCurrentPage}"
-        @click="setCurrentPage(item)"
-    >{{item}}</button> -->
-    <button 
-        v-for="item in startEndArr"
-        :key="item" 
-        :class="{active:item == myCurrentPage}"
-        @click="setCurrentPage(item)"
-    >{{item}}</button>
+    <div class="pagination">
+        <button 
+            :class="{disabled: myCurrentPage === 1}"
+            @click="updatePage(myCurrentPage - 1)"
+            :disabled="myCurrentPage === 1"
+        >上一页</button>
+        <button v-if="startEnd.start > 1" @click="updatePage(1)">1</button>
+        <button class="disabled" v-if="startEnd.start > 2">...</button>
+        <button 
+            v-for="item in startEnd.end" 
+            :key="item"
+            v-if="item >= startEnd.start"
+            :class="{active: item === myCurrentPage}"
+            @click="updatePage(item)"
+        >{{item}}</button>
 
-    <button class="disable" v-if="startEnd.end < totalPages-1">...</button>
-    <button v-if="startEnd.end < totalPages" @click="setCurrentPage(totalPages)">{{totalPages}}</button>
-    <button 
-        :class="{disabled: myCurrentPage === totalPages}" 
-        @click="setCurrentPage(myCurrentPage + 1)"
-        :disabled="myCurrentPage === totalPages"
-    >下一页</button>
-    <button class="disable">共 {{total}} 条</button>
-    
-  </div>
+        <button class="disabled" v-if="myCurrentPage < pageAll - 1">...</button>
+        <button v-if="startEnd.end < pageAll" @click="updatePage(pageAll)">{{pageAll}}</button>
+        <button 
+            :class="{disabled: myCurrentPage === pageAll}"
+            @click="updatePage(myCurrentPage + 1)"
+            :disabled="myCurrentPage === pageAll"
+        >下一页</button>
+        <button class="disabled">共  24  条</button>
+    </div>
 </template>
+
 
 <script>
 export default {
-  name: 'Pagination',
-  props:{
-    currentPage:{ //当前页码
-        type:Number,
-        default: 1
-    },
-    total:{ //数据总数量
-        type:Number,
-        default: 0
-    },
-    pageSize:{ //每页最大数量
-        type:Number,
-        default: 10
-    },
-    showPageNo:{ //最大连续页码数
-        type:Number,
-        default: 4,
-        // 必须是奇数
-        validator: function(value){
-            return value % 2 === 1
+    name:'Pagination',
+    props:{
+       /*  :currentPage="options.pageNo"
+        :total="total"
+        :pageSize="options.pageSize"
+        :showPageNo="5"
+        @currentChange="getShopList" */
+        currentPage:{ //当前页数
+            type:Number,
+            default: 1
+        },
+        total:{  //全部商品数量
+            type: Number,
+            default: 0
+        },
+        pageSize:{  //单页显示数量
+            type: Number,
+            default: 3
+        },
+        showPageNo:{  //最小连续页数
+            type: Number,
+            default: 5,
+            // 限制数值为奇数
+            validator: function(value){
+                return value % 2 === 1
+            }
         }
-    }
-  },
+    },
     data(){
-        return {
-            // 内部保存的当前页码数
-            myCurrentPage:this.currentPage
+        return { //内部的当前页数
+            myCurrentPage: this.currentPage
         }
     },
+    computed:{
+        // 通过已有数据，计算全部页数
+        pageAll(){
+            return Math.ceil(this.total / this.pageSize)
+        },
 
-  computed:{
-    // 计算得到开启也和结束也的数组
-    startEndArr(){
-        const arr = []
-        const {start, end} = this.startEnd
-        for (let page = start; page < end; page++) {
-            arr.push(page)
-        }
-        return arr
-    },
-
-    totalPages(){  //总页数
-        return Math.ceil(this.total / this.pageSize)
-    },
-    startEnd(){ //连续页码数的开始页码与结束页码
-        let start, end
-        // 获取计算需要的值
-        const {myCurrentPage,showPageNo,totalPages} = this
-
-        // 计算start
-        // 例如: 5  5  10       34[5]67
-        //      1   5   10      [1]2345
-        start = myCurrentPage - Math.floor(showPageNo / 2)
-        if(start < 1){
-            start = 1
-        }
-        // 计算end
-        // 5   5   10      34[5]67
-        // 9   5   10      678[9]10
-        // 3    5   3      12[3]
-        end = start + showPageNo - 1
-        if(end > totalPages){
-            end = totalPages
-            start = end - showPageNo + 1
-            if(start < 1){
+        // 计算开始页码和结束页码
+        startEnd(){
+            let start, end
+            // 获取相应数据
+            const {myCurrentPage,showPageNo,pageAll} = this
+            // 计算start
+            // 5    5   10  34[5]67
+            // 1    5   10  [1]2345
+            start = myCurrentPage - Math.floor(showPageNo / 2)
+            if(start < 1) {
                 start = 1
-            } 
-        }
+            }
 
-        return {start, end}
+            // 计算end
+            end = start + showPageNo - 1
+            // 10   5   10  6789[10]
+            if(end > pageAll){
+                end = pageAll
+                // 修正start
+                start = end - showPageNo + 1
+                // 1    5   3   [1]23
+                if(start < 1) {
+                    start = 1
+                }
+            }
+
+            return {start, end}
+        }
+    },
+    methods:{
+        updatePage(page){
+            this.myCurrentPage = page
+            this.$emit('currentChange',page)
+        }
+    },
+    watch:{
+        currentPage(value){
+            this.myCurrentPage = value
+        }
     }
-  },
-  methods:{
-    setCurrentPage(page){
-        if(this.myCurrentPage === page) return
-        this.myCurrentPage = page
-        this.$emit('currentChange',page)
-    }
-  },
-  watch:{
-    currentPage(value){
-        this.myCurrentPage = value
-    }
-  }
 }
 </script>
+
 
 <style lang="less" scoped>
 .pagination {
