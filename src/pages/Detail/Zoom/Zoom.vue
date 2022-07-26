@@ -3,9 +3,9 @@
     <img :src="defaultImg.imgUrl" />
     <div class="event" @mousemove="move"></div>
     <div class="big">
-      <img :src="defaultImg.imgUrl" />
+      <img :src="defaultImg.imgUrl" ref="big"/>
     </div>
-    <div class="mask"></div>
+    <div class="mask" ref="mask"></div>
   </div>
 </template>
 
@@ -31,6 +31,35 @@
         this.defaultIndex = index
       },
       move(event){
+        let moveX = event.offsetX
+        let moveY = event.offsetY
+        // console.log(moveX,moveY);
+
+        // 计算遮罩需要移动的xy
+        let mask = this.$refs.mask
+
+        let maskX = moveX - mask.clientWidth / 2
+        let maskY = moveY - mask.clientHeight / 2
+
+        // 限制移动范围
+        if(maskX < 0){
+          maskX = 0
+        }else if(maskX > mask.clientWidth){
+          maskX = mask.clientWidth
+        }
+        if(maskY < 0){
+          maskY = 0
+        }else if(maskY > mask.clientHeight){
+          maskY = mask.clientHeight
+        }
+        // 设置蒙版的偏移量
+        mask.style.left = maskX + 'px'
+        mask.style.top = maskY + 'px'
+
+        let big = this.$refs.big
+
+        big.style.left = -maskX * 2 + 'px'
+        big.style.top = -maskY * 2 + 'px'
       }
     }
   }

@@ -75,12 +75,17 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" 
+                  v-model="skuNum" 
+                  @change="skuNum = skuNum >= 1 ? skuNum : 1"
+                >
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a href="javascript:" class="mins" 
+                  @click="skuNum > 1 ? skuNum-- : skuNum = 1"
+                >-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addShopCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -345,7 +350,8 @@ import ImageList from './ImageList/ImageList'
 
     data(){
       return {
-        skuId:''
+        skuId:'',
+        skuNum: 1
       }
     },
 
@@ -375,6 +381,24 @@ import ImageList from './ImageList/ImageList'
         spuSaleAttrValueList.forEach(item => item.isChecked = '0')
         // 选中属性重置为1
         spuSaleAttrValue.isChecked = '1'
+      },
+
+      // 添加购物车
+      async addShopCart(){
+        const {skuId, skuNum} = this
+
+        try {
+          await this.$store.dispatch('addOrUpdateCart',{skuId, skuNum})
+          alert('添加购物车成功！')
+
+          sessionStorage.setItem('SKUINFO_KEY',JSON.stringify(this.skuInfo))
+
+          // 跳转成功页面
+          this.$router.push('/addcartsuccess?skuNum=' + skuNum)
+
+        } catch (error) {
+          alert(error.message)
+        }
       }
     }
   }

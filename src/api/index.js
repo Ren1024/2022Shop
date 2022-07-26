@@ -29,6 +29,14 @@ export const reqDetailInfo = (skuId) =>{
     })
 }
 
+// 添加或更新购物车 /api/cart/addToCart/{ skuId }/{ skuNum }  POST
+export const reqAddOrUpdateShopCart = (skuId,skuNum) =>{
+    return ajax({
+        url:`/cart/addToCart/${ skuId }/${ skuNum }`,
+        method:'POST'
+    })
+}
+
 
 // mock模拟数据请求
 // today-mock请求
