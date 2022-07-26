@@ -18,11 +18,16 @@ export function reqCategoryList(){
 /* // banner请求(真实接口)
 export const reqBannerList = () => ajax('/cms/banner') */
 
-// banner请求（mock接口）
-export const reqBannerList = () => mockAjax('/banner')
-
 // 搜索商品请求
 export const reqSearchList = (listParams) => ajax.post('/list',listParams)
+
+// 商品详情页   /api/item/{ skuId }  GET
+export const reqDetailInfo = (skuId) =>{
+    return ajax({
+        url:`/item/${skuId}`,
+        method:'GET'
+    })
+}
 
 
 // mock模拟数据请求
@@ -31,3 +36,6 @@ export const reqTodayList = () => mockAjax('/today')
 
 // floors请求
 export const reqFloors = () => mockAjax('/floors')
+
+// banner请求（mock接口）
+export const reqBannerList = () => mockAjax('/banner')

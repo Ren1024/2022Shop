@@ -46,4 +46,8 @@ export default new VueRouter({
     mode:'history',  //没有#的模式
     // 注册路由
     routes,
+    // 解决路由跳转滚动问题
+    scrollBehavior (to, from, savedPosition) {
+      return { x: 0, y: 0 }
+    }
 })
