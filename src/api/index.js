@@ -37,6 +37,15 @@ export const reqAddOrUpdateShopCart = (skuId,skuNum) =>{
     })
 }
 
+// 获取购物车列表 /api/cart/cartList  get
+export const reqCartList = () => {
+    return ajax({
+        url:'/cart/cartList',
+        method:'GET'
+    })
+}
+
+
 
 // mock模拟数据请求
 // today-mock请求

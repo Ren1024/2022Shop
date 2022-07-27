@@ -77,7 +77,7 @@
               <div class="controls">
                 <input autocomplete="off" class="itxt" 
                   v-model="skuNum" 
-                  @change="skuNum = skuNum >= 1 ? skuNum : 1"
+                  @change="skuNum = skuNum >= 1 ? parseInt(skuNum) : 1"
                 >
                 <a href="javascript:" class="plus" @click="skuNum++">+</a>
                 <a href="javascript:" class="mins" 

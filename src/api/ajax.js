@@ -10,6 +10,8 @@ import axios from 'axios'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
+import store from '@/store'
+
 // 配置通用的基础路径和超时
 const service = axios.create({
     baseURL:'/api',  //基础路径
@@ -20,6 +22,13 @@ const service = axios.create({
 service.interceptors.request.use(config => {
     // 进度条开始
     NProgress.start()
+
+    // 在请求头中添加用户唯一标识
+    let userTempId = store.state.user.userTempId
+    if(userTempId){
+        config.headers.userTempId = userTempId
+    }
+
     // 配置项必须返回
     return config
 })
