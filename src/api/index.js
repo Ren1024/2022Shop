@@ -45,6 +45,40 @@ export const reqCartList = () => {
     })
 }
 
+// 切换商品选中状态 /api/cart/checkCart/{skuID}/{isChecked} GET
+export const reqUpdateCartChecked = (skuID,isChecked) =>{
+    return ajax({
+        url:`/cart/checkCart/${skuID}/${isChecked}`,
+        method:'GET'
+    })
+}
+
+// 删除单个商品  /api/cart/deleteCart/{skuId}  delete
+export const reqDeleteCart = (skuId) =>{
+    return ajax({
+        url:`/cart/deleteCart/${skuId} `,
+        method:'delete'
+    })
+}
+
+// . 注册用户   /api/user/passport/register POST 
+export const reqUserRegister = (config) =>{
+    return ajax({
+        url:'/user/passport/register',
+        method:'post',
+        data:config
+    })
+}
+
+// 获取验证码 /api/user/passport/sendCode/{phone}
+export const reqSendCode = (phone) => {
+    return ajax({
+        url:`/user/passport/sendCode/${phone}`,
+        method:'get'
+    })
+}
+
+
 
 
 // mock模拟数据请求

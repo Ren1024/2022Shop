@@ -13,7 +13,7 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="cartInfo in cartInfoList" :key="cartInfo.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="cartInfo.isChecked">
+            <input type="checkbox" name="chk_list" :checked="cartInfo.isChecked" @click="updateOne(cartInfo)">
           </li>
           <li class="cart-list-con2">
             <img :src="cartInfo.imgUrl">
@@ -34,7 +34,7 @@
             <span class="sum">{{cartInfo.cartPrice * cartInfo.skuNum}}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a href="javascript:;" class="sindelet" @click="deleteOne(cartInfo)">删除</a>
             <br>
             <a href="#none">移到收藏</a>
           </li>
@@ -44,11 +44,11 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" v-model="isCheckedAll">
+        <input class="chooseAll" type="checkbox" v-model="isCheckedAll" >
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a href="javascript:;" @click="deleteAll">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -81,7 +81,7 @@ import { mapState } from 'vuex'
       },
       // 购物车改变数量回调函数
       // 因为接口需要穿id和改变的数量，所有需要计算改变的数量
-      changeNum(cartInfo,disNum,flag){
+      async changeNum(cartInfo,disNum,flag){
         
         if(!flag){
           // 用户输入的数量转换成改变的数量
@@ -99,7 +99,7 @@ import { mapState } from 'vuex'
 
         // 发送更新购物车请求
         try {
-          this.$store.dispatch('addOrUpdateCart',{skuId:cartInfo.skuId, skuNum:disNum})
+          await this.$store.dispatch('addOrUpdateCart',{skuId:cartInfo.skuId, skuNum:disNum})
           this.getShopCartList()
           alert('修改商品成功')
           //重新获取购物车列表
@@ -107,6 +107,38 @@ import { mapState } from 'vuex'
           alert(error.message)
         }
         
+      },
+      // 修改购物车单个选中状态
+      async updateOne(cartInfo){
+        try {
+          await this.$store.dispatch('updateCartChecked',{skuID:cartInfo.skuId, isChecked:cartInfo.isChecked?0:1})
+          alert('状态切换成功！')
+          this.getShopCartList()
+        } catch (error) {
+          alert(error.message)
+        }
+      },
+
+      // 删除单个商品
+      async deleteOne(cartInfo){
+        try {
+          this.$store.dispatch('deteleCart',cartInfo.skuId)
+          alert('删除成功')
+          this.getShopCartList()
+        } catch (error) {
+          alert(error.message)
+        }
+      },
+
+      // 删除选中的商品
+      async deleteAll(){
+        try {
+          await this.$store.dispatch('deleteCartAll')
+          alert('删除选中成功')
+          this.getShopCartList()
+        } catch (error) {
+          alert(error.message)
+        }
       }
     },
 
@@ -138,8 +170,15 @@ import { mapState } from 'vuex'
         get(){
           return this.cartInfoList.every(item => item.isChecked)
         },
-        set(){
-
+        async set(val){
+          try {
+            const result = await this.$store.dispatch('updateCartCheckedAll',val ? 1 : 0)
+            // alert('全部更新状态成功')
+            this.getShopCartList()
+            // console.log(result);
+          } catch (error) {
+            alert(error.message)
+          }
         }
       }
     }
