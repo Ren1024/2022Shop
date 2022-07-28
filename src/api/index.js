@@ -33,7 +33,8 @@ export const reqDetailInfo = (skuId) =>{
 export const reqAddOrUpdateShopCart = (skuId,skuNum) =>{
     return ajax({
         url:`/cart/addToCart/${ skuId }/${ skuNum }`,
-        method:'POST'
+        method:'POST',
+        
     })
 }
 
@@ -75,6 +76,15 @@ export const reqSendCode = (phone) => {
     return ajax({
         url:`/user/passport/sendCode/${phone}`,
         method:'get'
+    })
+}
+
+// 登录 /api/user/passport/login  post 
+export const reqUserLogin = (phone, password) => {
+    return ajax({
+        url:'/user/passport/login',
+        method:'post',
+        data:{phone, password}
     })
 }
 
