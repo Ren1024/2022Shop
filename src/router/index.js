@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from '@/router/routes'
+import store from '@/store'
 
 // 声明使用插件
 Vue.use(VueRouter)
@@ -41,7 +42,7 @@ VueRouter.prototype.replace = function replace(location, onResolve, onReject) {
 }
 
 // 向外默认暴露路由对象
-export default new VueRouter({
+ const router = new VueRouter({
     // 模式
     mode:'history',  //没有#的模式
     // 注册路由
@@ -51,3 +52,51 @@ export default new VueRouter({
       return { x: 0, y: 0 }
     }
 })
+
+// 全局前置守卫
+router.beforeEach(async (to,from,next)=>{
+  // 根据token判断用户是否登录
+  const token = store.state.user.token
+  if(token){//用户登录
+    // 登录后，去登录页
+    if(to.path === '/login'){
+      // 返回首页
+      next('/')
+    }else{//登录后去其他页面
+      // 根据用户信息，来判断token是否过期
+      const hasUserInfo = store.state.user.userInfo.name
+
+      if(hasUserInfo){//用户信息正常
+        // 放行
+        next()
+      }else{//用户信息获取不到
+        // 重新拿着token去请求用户信息
+        try {//成功，正常跳转
+          await store.dispatch('getUserInfo')
+          // 放行
+          next()
+        } catch (error) {//失败，token失效，重置token和用户信息，重新登录
+          alert('用户登录已过期，请重新登录')
+          // 重置token和用户信息
+          store.dispatch('resetUserInfo')
+          // 跳转到登录也，记录目标路由，登录成功后，跳转目标路由
+          next('/login?redirect=' + to.path)   
+        }
+      }
+    }
+
+  }else{//用户未登录
+    // 未登录暂不处理
+    if(to.path === '/shopcart'){
+      next('/login?redirect=' + to.path)   
+    }else{
+      next()
+    }
+  }
+})
+
+
+export default router
+
+
+

@@ -29,6 +29,12 @@ service.interceptors.request.use(config => {
         config.headers.userTempId = userTempId
     }
 
+    // 在请求头里面添加token
+    let token = store.state.user.token 
+    if(token){
+        config.headers.token = token 
+    }
+
     // 配置项必须返回
     return config
 })

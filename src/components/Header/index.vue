@@ -6,7 +6,11 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="$store.state.user.userInfo.name">
+            <a href="javascript:;">{{$store.state.user.userInfo.name}}</a>
+            <a href="javascript:;" class="register" @click="logout">退出登录</a>
+          </p>
+          <p v-else>
             <span>请</span>
             <!-- <a href="###">登录</a> -->
             <router-link to="/login">登录</router-link>
@@ -57,6 +61,7 @@ export default {
   },
 
   methods:{
+    // 跳转到search
     search(){
       // this.$router.push('/search/' + this.keyword)
 
@@ -82,6 +87,16 @@ export default {
       }
       // this.$router.push(location,()=>{})
       // this.$router.push(location).catch(()=>{})
+    },
+
+    // 退出登录
+    async logout(){
+      try {
+        await this.$store.dispatch('userLogout')
+        alert('退出登录成功')
+      } catch (error) {
+        alert(error.message)
+      }
     }
   }
 }
