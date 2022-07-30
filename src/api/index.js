@@ -112,6 +112,43 @@ export const reqTradeInfo = () => {
     })
 }
 
+// 提交订单 /api/order/auth/submitOrder?tradeNo={tradeNo}  post
+export const reqSubmitTrade = (tradeNo,tradeData) => {
+    return ajax({
+        // url:`/order/auth/submitOrder?tradeNo=${tradeNo}`,
+        url:'/order/auth/submitOrder',
+        method:'post',
+        params:{tradeNo},
+        data:tradeData
+    })
+}
+
+// 获取支付信息 /api/payment/weixin/createNative/{orderId} get
+export const reqPayInfo = (orderId) => {
+    return ajax({
+        url:`/payment/weixin/createNative/${orderId}`,
+        method:'get'
+    })
+}
+
+// 查询订单支付状态 /api/payment/weixin/queryPayStatus/{orderId}    get
+export const reqPayStatus = (orderId) => {
+    return ajax({
+        url: `/payment/weixin/queryPayStatus/${orderId} `,
+        method: 'get'
+    })
+}
+
+// 获取我的订单列表 /api/order/auth/{page}/{limit}  get
+export const reqMyOrderInfo = (page,limit) => {
+    return ajax({
+        url: `/order/auth/${page}/${limit}`,
+        method: 'get'
+    })
+}
+
+
+
 
 
 

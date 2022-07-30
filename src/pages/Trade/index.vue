@@ -82,7 +82,8 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <!-- <router-link class="subBtn" to="/pay">提交订单</router-link> -->
+      <a href="javascript:;" class="subBtn" @click="submitTrade">提交订单</a>
     </div>
   </div>
 </template>
@@ -108,6 +109,33 @@ import { mapGetters, mapState } from 'vuex'
       changeDefault(userAddress,userAddressList){
         userAddressList.forEach(item => item.isDefault = '0')
         userAddress.isDefault = '1'
+      },
+
+      // 提交订单
+      async submitTrade(){
+        // 收集数据
+        const {tradeInfo,detailArrayList,userAddressList,message} = this
+        let tradeNo = tradeInfo.tradeNo
+        let tradeData = {
+            "consignee": userAddressList.consignee,
+            "consigneeTel": userAddressList.phoneNum,
+            "deliveryAddress": userAddressList.userAddress,
+            "paymentWay": "ONLINE",
+            "orderComment": message,
+            "orderDetailList": detailArrayList
+        }
+        try {
+          // 发送提交订单请求
+          const result = await this.$API.reqSubmitTrade(tradeNo,tradeData)
+          console.log(result);
+          if(result.code === 200){
+            alert('提交订单成功')
+            this.$router.push('/pay?orderNo=' + result.data)
+          }
+        } catch (error) {
+          alert('提交订单失败！')
+        }
+        
       }
     },
     computed:{

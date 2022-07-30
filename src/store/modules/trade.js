@@ -13,7 +13,7 @@ const mutations = {
 const actions = {
     async getTradeInfo({commit}){
         const result = await reqTradeInfo()
-        console.log(result);
+        // console.log(result);
         if(result.code === 200){
             commit('RECEIVE_TRADEINFO',result.data)
         }

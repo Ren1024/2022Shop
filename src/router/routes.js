@@ -6,6 +6,11 @@ import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
 import Trade from '@/pages/Trade'
+import Pay from '@/pages/Pay'
+import PaySuccess from '@/pages/PaySuccess'
+import Center from '@/pages/Center'
+import Myorder from '@/pages/Center/Myorder'
+import GroupOrder from '@/pages/Center/GroupOrder'
 
 
 /* 
@@ -28,6 +33,20 @@ export default [
         })
     },
     {
+        path:'/login',
+        component:Login,
+        meta:{
+            isHideFooter: true
+        }
+    },
+    {
+        path:'/register',
+        component:Register,
+        meta:{
+            isHideFooter: true
+        }
+    },
+    {
         path: '/detail/:skuId',
         component: Detail
     },
@@ -44,17 +63,31 @@ export default [
         component: Trade
     },
     {
-        path:'/login',
-        component:Login,
-        meta:{
-            isHideFooter: true
-        }
+        path: '/pay',
+        component: Pay
     },
     {
-        path:'/register',
-        component:Register,
-        meta:{
-            isHideFooter: true
-        }
+        path: '/paysuccess',
+        component: PaySuccess
     },
+    {
+        path: '/center',
+        component: Center,
+        redirect:'center/myorder',
+        children:[
+            {
+                path:'myorder',
+                component: Myorder
+            },
+            {
+                path:'grouporder',
+                component: GroupOrder
+            },
+            /* {
+                path:'',
+                redirect:'myorder'
+            } */
+        ]
+    },
+   
 ]
