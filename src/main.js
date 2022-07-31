@@ -7,9 +7,18 @@ import MyPagination from '@/components/Pagination'
 // import swiper from 'swiper/css/swiper.css'
 
 
-import '@/plugins/swiper'  //这是swiper配置，用于轮播图
-import '@/mock/mockServe' //这是mock配置，用于模拟数据
-import '@/plugins/element'  //这是element-ui配置，用于搭建页面
+import '@/plugins/swiper'  //加载swiper配置，用于轮播图
+import '@/mock/mockServe' //加载mock配置，用于模拟数据
+import '@/plugins/element'  //加载element-ui配置
+import '@/plugins/validate'  //加载element-ui配置
+
+import VueLazyload from 'vue-lazyload' //图片懒加载
+import loading from '@/assets/images/loading.gif'
+
+Vue.use(VueLazyload,{
+    loading,
+})
+
 
 import * as API from '@/api'  //这是ajax接口配置，用于全局发送请求
 

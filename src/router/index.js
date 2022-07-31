@@ -86,10 +86,12 @@ router.beforeEach(async (to,from,next)=>{
     }
 
   }else{//用户未登录
-    // 未登录暂不处理
-    if(to.path === '/shopcart'){
-      next('/login?redirect=' + to.path)   
-    }else{
+    // 未登录不能进入以下页面
+    // 订单相关页面，用户中心，支付页面
+    if(to.path.indexOf('/trade') === 0 || to.path.startsWith('/pay') || to.path.startsWith('/center')){
+      
+      next('/login?redirect=' + to.path)
+    }else {
       next()
     }
   }
